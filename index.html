@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday, Prerna ✨</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💖</text></svg>">
+  
+  <!-- Google Fonts: Cormorant Garamond, Plus Jakarta Sans, Caveat -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Tailwind Configuration -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            romance: {
+              50: '#fff5f6',
+              100: '#ffe4e8',
+              200: '#fecdcf',
+              300: '#fea3ab',
+              400: '#fc6b7c',
+              500: '#f43f5e',
+              600: '#e11d48',
+              700: '#be123c',
+              800: '#9f1239',
+              900: '#4c0519',
+            },
+            parchment: {
+              50: '#fdfbf7',
+              100: '#f9f5ed',
+              200: '#f2e8d8',
+              300: '#e8d7bd',
+              400: '#dbc19d',
+              500: '#cbab7f',
+            },
+            warmgold: {
+              300: '#fde047',
+              400: '#facc15',
+              500: '#eab308',
+              600: '#ca8a04',
+            }
+          },
+          fontFamily: {
+            serif: ['"Cormorant Garamond"', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            handwriting: ['"Caveat"', 'cursive'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-[#FFFDF9] text-stone-800 font-sans antialiased selection:bg-romance-200 selection:text-romance-900 overflow-x-hidden">
+
+  <!-- ==================== MAGICAL CUSTOM CURSOR & STARDUST CANVAS ==================== -->
+  <canvas id="cursor-canvas"></canvas>
+  <div id="cursor-dot" class="cursor-dot opacity-0"></div>
+  <div id="cursor-ring" class="cursor-ring opacity-0"></div>
+
+  <!-- Ambient Natural Floating Background Particles (Petals & Starlight) -->
+  <div id="particle-container" class="fixed inset-0 pointer-events-none z-0 overflow-hidden"></div>
+
+  <!-- Floating Audio & Quick Navigation Controls -->
+  <div class="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
+    <!-- Secret Love Note Pill (Easter Egg Alert) -->
+    <div id="easter-egg-banner" class="hidden transform transition-all duration-300 bg-white/95 backdrop-blur-md px-4 py-2.5 rounded-full shadow-lg border border-romance-200 text-xs text-romance-700 font-medium items-center gap-2">
+      <span>✨ "You make every normal day feel like my favorite day, Prerna."</span>
+      <button onclick="dismissEasterEgg()" class="text-stone-400 hover:text-stone-600">✕</button>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <!-- Music Player Button -->
+      <button id="music-toggle-btn" class="group relative flex items-center gap-2.5 bg-white/95 hover:bg-white backdrop-blur-md px-4 py-2.5 rounded-full shadow-lg border border-romance-100 hover:border-romance-300 transition-all duration-300 text-stone-700 hover:text-romance-600 hover:scale-105 active:scale-95" title="Play our background music">
+        <span class="music-wave flex items-end gap-0.5 h-4 w-4">
+          <span class="bar bar-1"></span>
+          <span class="bar bar-2"></span>
+          <span class="bar bar-3"></span>
+        </span>
+        <span id="music-text" class="text-xs font-semibold tracking-wide font-sans">Our Song 🎵</span>
+      </button>
+
+      <!-- Scroll to Top -->
+      <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="w-10 h-10 flex items-center justify-center bg-white/95 hover:bg-white backdrop-blur-md rounded-full shadow-lg border border-stone-100 hover:border-romance-200 text-stone-600 hover:text-romance-600 transition-all duration-300 hover:scale-105 active:scale-95" title="Back to top">
+        <i data-lucide="arrow-up" class="w-4 h-4"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Header / Navigation Bar -->
+  <header class="fixed top-0 left-0 right-0 z-40 bg-[#FFFDF9]/85 backdrop-blur-md border-b border-stone-100/80 transition-all duration-300">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <a href="#hero" class="flex items-center gap-2 group">
+        <span class="text-2xl group-hover:scale-125 transition-transform duration-300">💖</span>
+        <span class="font-serif text-xl sm:text-2xl font-bold tracking-wide text-stone-800 group-hover:text-romance-600 transition-colors">
+          Happy Birthday, <span class="editable-name text-romance-600" data-key="herName">Prerna</span>
+        </span>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <nav class="hidden md:flex items-center gap-7 text-sm font-medium text-stone-600">
+        <a href="#sides" class="hover:text-romance-600 transition-colors">Every Side of You</a>
+        <a href="#gallery" class="hover:text-romance-600 transition-colors">Photo Album</a>
+        <a href="#letters" class="hover:text-romance-600 transition-colors">A Note for You</a>
+        <a href="#together" class="hover:text-romance-600 transition-colors font-semibold text-romance-600">You & Me ❤️</a>
+        <a href="#grand-finale" class="hover:text-romance-600 transition-colors">Make a Wish 🎂</a>
+      </nav>
+
+      <!-- Secret Easter Egg Trigger in Header -->
+      <button onclick="triggerEasterEgg()" class="p-2 rounded-full hover:bg-romance-50 text-stone-400 hover:text-romance-500 transition-colors relative" title="Click for a little secret...">
+        <i data-lucide="sparkles" class="w-4 h-4 text-warmgold-500 animate-spin-slow"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- ==================== HERO SECTION ==================== -->
+  <section id="hero" class="relative min-h-screen pt-28 pb-16 flex flex-col items-center justify-center text-center px-4 overflow-hidden">
+    <!-- Natural Ambient Glow Background Gradients -->
+    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[580px] h-[580px] bg-gradient-to-tr from-romance-200/40 via-warmgold-300/20 to-transparent rounded-full blur-3xl -z-10 pointer-events-none"></div>
+    <div class="absolute bottom-10 left-10 w-80 h-80 bg-romance-100/40 rounded-full blur-3xl -z-10 pointer-events-none"></div>
+
+    <div class="max-w-4xl mx-auto flex flex-col items-center z-10">
+      
+      <!-- Date & Occasion Badge -->
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-romance-50/90 border border-romance-200/70 shadow-sm text-romance-700 text-xs font-semibold tracking-wider uppercase mb-6 animate-fade-in">
+        <i data-lucide="cake" class="w-3.5 h-3.5 text-romance-500"></i>
+        <span>It's Your Special Day, Prerna! 🎉</span>
+      </div>
+
+      <!-- Main Headline -->
+      <h1 class="font-serif text-5xl sm:text-7xl lg:text-8xl font-bold text-stone-900 tracking-tight leading-[1.1] mb-6">
+        Happy Birthday, <br class="hidden sm:inline" />
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-romance-600 via-rose-500 to-warmgold-500 italic">Prerna ❤️</span>
+      </h1>
+
+      <!-- Cute & Real Subtitle -->
+      <p class="max-w-2xl text-stone-600 text-lg sm:text-xl font-light leading-relaxed mb-8 font-sans">
+        I made this little website just for you today, Prerna. A small place with your favorite photos, some of our best memories, and a reminder of how much I love having you in my life.
+      </p>
+
+      <!-- Relationship Counter Stats Card (3 clean, balanced, relatable stats) -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 w-full max-w-xl mb-12 bg-white/85 backdrop-blur-md p-6 rounded-3xl border border-stone-200/70 shadow-scrapbook hover:shadow-lg transition-all duration-300">
+        <div class="flex flex-col items-center">
+          <span id="counter-days" class="font-serif text-3xl sm:text-4xl font-bold text-romance-600">368+</span>
+          <span class="text-xs uppercase tracking-wider text-stone-500 font-medium mt-1">Days Together</span>
+          <span class="text-[10px] text-romance-500 font-medium mt-0.5">Since Nov 18, 2025</span>
+        </div>
+        <div class="flex flex-col items-center">
+          <span class="font-serif text-3xl sm:text-4xl font-bold text-warmgold-600">∞</span>
+          <span class="text-xs uppercase tracking-wider text-stone-500 font-medium mt-1">Inside Jokes</span>
+          <span class="text-[10px] text-stone-400 mt-0.5">And Counting</span>
+        </div>
+        <div class="flex flex-col items-center">
+          <span class="font-serif text-3xl sm:text-4xl font-bold text-romance-600">#1</span>
+          <span class="text-xs uppercase tracking-wider text-stone-500 font-medium mt-1">My Favorite Person</span>
+          <span class="text-[10px] text-stone-400 mt-0.5">Every Single Day</span>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-wrap items-center justify-center gap-4">
+        <a href="#sides" class="group flex items-center gap-2 bg-gradient-to-r from-romance-600 to-rose-500 hover:from-romance-700 hover:to-rose-600 text-white font-medium px-8 py-3.5 rounded-full shadow-lg shadow-romance-500/20 hover:shadow-romance-500/35 transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0">
+          <span>See Your Photos</span>
+          <i data-lucide="arrow-down" class="w-4 h-4 group-hover:translate-y-1 transition-transform"></i>
+        </a>
+        <a href="#together" class="flex items-center gap-2 bg-white hover:bg-stone-50 text-stone-700 font-medium px-7 py-3.5 rounded-full border border-stone-200 shadow-sm hover:shadow transition-all duration-300">
+          <span>You & Me ❤️</span>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 1: EVERY SIDE OF YOU ==================== -->
+  <section id="sides" class="py-24 px-6 bg-parchment-50/70 relative">
+    <div class="max-w-6xl mx-auto">
+      
+      <!-- Section Header -->
+      <div class="text-center max-w-2xl mx-auto mb-16">
+        <span class="text-romance-600 text-sm font-semibold tracking-widest uppercase">Every Version of You</span>
+        <h2 class="font-serif text-4xl sm:text-5xl font-bold text-stone-900 mt-2 mb-3">All The Reasons I Adore You</h2>
+        <div class="flex items-center justify-center gap-2 text-stone-400 mb-4 text-xs">
+          <span>— ✦ —</span>
+        </div>
+        <p class="text-stone-600 leading-relaxed font-sans">
+          Whether you're all dressed up in a saree, cuddling a giant teddy, or making silly faces in the passenger seat—you're always my favorite view.
+        </p>
+      </div>
+
+      <!-- Interactive Scrapbook Polaroid Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        
+        <!-- Highlight 1: The Diya / Traditional Look -->
+        <div class="polaroid-card relative bg-white p-4 rounded-3xl shadow-scrapbook border border-stone-100 transition-all duration-300 hover:-translate-y-1.5 hover:rotate-1">
+          <div class="washi-tape washi-tape-gold"></div>
+          <div class="overflow-hidden rounded-2xl h-84">
+            <img src="photos/diya.jpg" alt="Glowing with Diyas" class="w-full h-full object-cover object-top transition-transform duration-500 hover:scale-105">
+          </div>
+          <div class="pt-4 px-1">
+            <div class="flex items-center justify-between text-xs text-romance-600 font-semibold uppercase tracking-wider mb-1">
+              <span>Festival of Lights ✨</span>
+              <span>Glowing</span>
+            </div>
+            <p class="font-handwriting text-2xl text-stone-800">You light up the whole room 🪔</p>
+            <p class="text-stone-500 text-xs font-sans mt-1">Literally the brightest and sweetest smile ever.</p>
+          </div>
+        </div>
+
+        <!-- Highlight 2: Red Saree Mirror Selfie -->
+        <div class="polaroid-card relative bg-white p-4 rounded-3xl shadow-scrapbook border border-stone-100 transition-all duration-300 hover:-translate-y-1.5 hover:-rotate-1">
+          <div class="washi-tape washi-tape-rose"></div>
+          <div class="overflow-hidden rounded-2xl h-84">
+            <img src="photos/saree.jpg" alt="Stunning in Saree" class="w-full h-full object-cover object-top transition-transform duration-500 hover:scale-105">
+          </div>
+          <div class="pt-4 px-1">
+            <div class="flex items-center justify-between text-xs text-romance-600 font-semibold uppercase tracking-wider mb-1">
+              <span>Ethnic Glam 💃</span>
+              <span>10/10</span>
+            </div>
+            <p class="font-handwriting text-2xl text-stone-800">Took my breath away in red ❤️</p>
+            <p class="text-stone-500 text-xs font-sans mt-1">How can someone look this stunning? Still not over this picture.</p>
+          </div>
+        </div>
+
+        <!-- Highlight 3: Giant Teddy Hug -->
+        <div class="polaroid-card relative bg-white p-4 rounded-3xl shadow-scrapbook border border-stone-100 transition-all duration-300 hover:-translate-y-1.5 hover:rotate-1">
+          <div class="washi-tape"></div>
+          <div class="overflow-hidden rounded-2xl h-84">
+            <img src="photos/teddy.jpg" alt="Teddy Hug" class="w-full h-full object-cover object-top transition-transform duration-500 hover:scale-105">
+          </div>
+          <div class="pt-4 px-1">
+            <div class="flex items-center justify-between text-xs text-romance-600 font-semibold uppercase tracking-wider mb-1">
+              <span>Cozy Vibes 🧸</span>
+              <span>Too Cute</span>
+            </div>
+            <p class="font-handwriting text-2xl text-stone-800">Cutest hug ever</p>
+            <p class="text-stone-500 text-xs font-sans mt-1">Giving the giant teddy bear serious competition for cutest cuddle.</p>
+          </div>
+        </div>
+
+        <!-- Highlight 4: Passenger Princess Car Selfie -->
+        <div class="polaroid-card relative bg-white p-4 rounded-3xl shadow-scrapbook border border-stone-100 transition-all duration-300 hover:-translate-y-1.5 hover:-rotate-1">
+          <div class="washi-tape washi-tape-rose"></div>
+          <div class="overflow-hidden rounded-2xl h-84">
+            <img src="photos/car1.jpg" alt="Passenger Princess" class="w-full h-full object-cover object-top transition-transform duration-500 hover:scale-105">
+          </div>
+          <div class="pt-4 px-1">
+            <div class="flex items-center justify-between text-xs text-romance-600 font-semibold uppercase tracking-wider mb-1">
+              <span>Car Rides 🚗</span>
+              <span>Passenger Princess</span>
+            </div>
+            <p class="font-handwriting text-2xl text-stone-800">Daisy filter & sunbeams 🌼</p>
+            <p class="text-stone-500 text-xs font-sans mt-1">My favorite co-pilot and passenger princess forever.</p>
+          </div>
+        </div>
+
+        <!-- Highlight 5: Pretty in Pink Dress -->
+        <div class="polaroid-card relative bg-white p-4 rounded-3xl shadow-scrapbook border border-stone-100 transition-all duration-300 hover:-translate-y-1.5 hover:rotate-1">
+          <div class="washi-tape washi-tape-gold"></div>
+          <div class="overflow-hidden rounded-2xl h-84">
+            <img src="photos/dress.jpg" alt="Pink Dress" class="w-full h-full object-cover object-top transition-transform duration-500 hover:scale-105">
+          </div>
+          <div class="pt-4 px-1">
+            <div class="flex items-center justify-between text-xs text-romance-600 font-semibold uppercase tracking-wider mb-1">
+              <span>Date Ready 💖</span>
+              <span>Radiant</span>
+            </div>
+            <p class="font-handwriting text-2xl text-stone-800">Pretty in pink</p>
+            <p class="text-stone-500 text-xs font-sans mt-1">Every color looks good on you, but this dress was perfection.</p>
+          </div>
+        </div>
+
+        <!-- Highlight 6: 3-Photo Collage -->
+        <div class="polaroid-card relative bg-white p-4 rounded-3xl shadow-scrapbook border border-stone-100 transition-all duration-300 hover:-translate-y-1.5 hover:-rotate-1">
+          <div class="washi-tape"></div>
+          <div class="overflow-hidden rounded-2xl h-84">
+            <img src="photos/collage1.jpg" alt="Collage Selfie" class="w-full h-full object-cover object-top transition-transform duration-500 hover:scale-105">
+          </div>
+          <div class="pt-4 px-1">
+            <div class="flex items-center justify-between text-xs text-romance-600 font-semibold uppercase tracking-wider mb-1">
+              <span>Triple the Smiles 🥰</span>
+              <span>Pure Joy</span>
+            </div>
+            <p class="font-handwriting text-2xl text-stone-800">Every single angle</p>
+            <p class="text-stone-500 text-xs font-sans mt-1">Look at that smile in every single frame. Impossible not to love.</p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 2: PHOTO ALBUM (FLIP CARDS) ==================== -->
+  <section id="gallery" class="py-24 px-6 bg-white relative">
+    <div class="max-w-6xl mx-auto">
+      
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <span class="text-romance-600 text-sm font-semibold tracking-widest uppercase">The Photo Album</span>
+        <h2 class="font-serif text-4xl sm:text-5xl font-bold text-stone-900 mt-2 mb-3">Some of My Favorite Snapshots</h2>
+        <div class="flex items-center justify-center gap-2 text-stone-400 mb-4 text-xs">
+          <span>— ✦ —</span>
+        </div>
+        <p class="text-stone-600 leading-relaxed font-sans">
+          Tap or hover on any photo to flip it over and read the sweet memory behind it.
+        </p>
+      </div>
+
+      <!-- Gallery Grid with 3D Flip Cards & Washi Tape Accents -->
+      <div id="gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        
+        <!-- Card 1: Festival of Lights (Diyas) -->
+        <div class="gallery-item">
+          <div class="flip-card h-84 w-full cursor-pointer" onclick="this.classList.toggle('flipped')">
+            <div class="flip-card-inner">
+              <div class="flip-card-front bg-white p-3.5 rounded-3xl shadow-scrapbook border border-stone-100 flex flex-col justify-between relative">
+                <div class="washi-tape washi-tape-gold"></div>
+                <img src="photos/diya.jpg" alt="Glowing with Diyas" class="w-full h-64 object-cover object-top rounded-2xl">
+                <div class="flex items-center justify-between px-2 pt-2">
+                  <span class="font-handwriting text-lg text-stone-700">Festival of Lights ✨</span>
+                  <span class="text-[10px] text-stone-400 font-sans uppercase">Tap</span>
+                </div>
+              </div>
+              <div class="flip-card-back bg-gradient-to-br from-romance-50 to-parchment-100 p-6 rounded-3xl shadow-scrapbook border border-romance-200 flex flex-col justify-between">
+                <div>
+                  <span class="text-xs font-semibold text-romance-600 uppercase tracking-wider">The Story</span>
+                  <p class="font-handwriting text-xl text-stone-800 mt-4 leading-relaxed">
+                    "You holding the diyas, looking so radiant and peaceful. Your light outshines every flame in the room."
+                  </p>
+                </div>
+                <div class="flex justify-between items-center text-xs text-stone-500 pt-4 border-t border-romance-200/60">
+                  <span>📍 Diwali Glow</span>
+                  <span>✨ Pure Radiance</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2: Ethnic Elegance (Red Saree) -->
+        <div class="gallery-item">
+          <div class="flip-card h-84 w-full cursor-pointer" onclick="this.classList.toggle('flipped')">
+            <div class="flip-card-inner">
+              <div class="flip-card-front bg-white p-3.5 rounded-3xl shadow-scrapbook border border-stone-100 flex flex-col justify-between relative">
+                <div class="washi-tape washi-tape-rose"></div>
+                <img src="photos/saree.jpg" alt="Stunning in Saree" class="w-full h-64 object-cover object-top rounded-2xl">
+                <div class="flex items-center justify-between px-2 pt-2">
+                  <span class="font-handwriting text-lg text-stone-700">Ethnic Elegance 💃</span>
+                  <span class="text-[10px] text-stone-400 font-sans uppercase">Tap</span>
+                </div>
+              </div>
+              <div class="flip-card-back bg-gradient-to-br from-warmgold-50 to-parchment-100 p-6 rounded-3xl shadow-scrapbook border border-warmgold-200 flex flex-col justify-between">
+                <div>
+                  <span class="text-xs font-semibold text-warmgold-700 uppercase tracking-wider">The Story</span>
+                  <p class="font-handwriting text-xl text-stone-800 mt-4 leading-relaxed">
+                    "The moment you wore this saree, I was completely speechless. Pure elegance, grace, and perfection."
+                  </p>
+                </div>
+                <div class="flex justify-between items-center text-xs text-stone-500 pt-4 border-t border-warmgold-200/60">
+                  <span>📍 Saree Glam</span>
+                  <span>💖 Breathtaking</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3: Multi-Frame Collage 2 -->
+        <div class="gallery-item">
+          <div class="flip-card h-84 w-full cursor-pointer" onclick="this.classList.toggle('flipped')">
+            <div class="flip-card-inner">
+              <div class="flip-card-front bg-white p-3.5 rounded-3xl shadow-scrapbook border border-stone-100 flex flex-col justify-between relative">
+                <div class="washi-tape"></div>
+                <img src="photos/collage2.jpg" alt="Multi-Angle Collage" class="w-full h-64 object-cover object-top rounded-2xl">
+                <div class="flex items-center justify-between px-2 pt-2">
+                  <span class="font-handwriting text-lg text-stone-700">Angles on point 📸</span>
+                  <span class="text-[10px] text-stone-400 font-sans uppercase">Tap</span>
+                </div>
+              </div>
+              <div class="flip-card-back bg-gradient-to-br from-amber-50 to-parchment-100 p-6 rounded-3xl shadow-scrapbook border border-amber-200 flex flex-col justify-between">
+                <div>
+                  <span class="text-xs font-semibold text-amber-700 uppercase tracking-wider">The Story</span>
+                  <p class="font-handwriting text-xl text-stone-800 mt-4 leading-relaxed">
+                    "From top to bottom, every angle is gorgeous. You're cute when posing and even cuter when laughing."
+                  </p>
+                </div>
+                <div class="flex justify-between items-center text-xs text-stone-500 pt-4 border-t border-amber-200/60">
+                  <span>📍 Camera Roll</span>
+                  <span>🌸 Cutest Ever</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4: Candid Car Laugh -->
+        <div class="gallery-item">
+          <div class="flip-card h-84 w-full cursor-pointer" onclick="this.classList.toggle('flipped')">
+            <div class="flip-card-inner">
+              <div class="flip-card-front bg-white p-3.5 rounded-3xl shadow-scrapbook border border-stone-100 flex flex-col justify-between relative">
+                <div class="washi-tape washi-tape-rose"></div>
+                <img src="photos/car4.jpg" alt="Candid Smile" class="w-full h-64 object-cover object-center rounded-2xl">
+                <div class="flex items-center justify-between px-2 pt-2">
+                  <span class="font-handwriting text-lg text-stone-700">Can't stop smiling 🥰</span>
+                  <span class="text-[10px] text-stone-400 font-sans uppercase">Tap</span>
+                </div>
+              </div>
+              <div class="flip-card-back bg-gradient-to-br from-indigo-50 to-romance-50 p-6 rounded-3xl shadow-scrapbook border border-indigo-200 flex flex-col justify-between">
+                <div>
+                  <span class="text-xs font-semibold text-indigo-700 uppercase tracking-wider">The Story</span>
+                  <p class="font-handwriting text-xl text-stone-800 mt-4 leading-relaxed">
+                    "You didn't know I was taking this picture. Just looking out, smiling, and making the whole car ride brighter."
+                  </p>
+                </div>
+                <div class="flex justify-between items-center text-xs text-stone-500 pt-4 border-t border-indigo-200/60">
+                  <span>📍 Road Trip</span>
+                  <span>✨ Pure Sunshine</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 3: A NOTE FOR YOU ==================== -->
+  <section id="letters" class="py-24 px-6 bg-parchment-100/60 relative">
+    <div class="max-w-4xl mx-auto">
+      
+      <div class="text-center max-w-2xl mx-auto mb-16">
+        <span class="text-romance-600 text-sm font-semibold tracking-widest uppercase">From Me to You</span>
+        <h2 class="font-serif text-4xl sm:text-5xl font-bold text-stone-900 mt-2 mb-3">A Birthday Note for You</h2>
+        <div class="flex items-center justify-center gap-2 text-stone-400 mb-4 text-xs">
+          <span>— ✦ —</span>
+        </div>
+        <p class="text-stone-600 leading-relaxed font-sans">
+          Click the seal below to open up the note I wrote for you.
+        </p>
+      </div>
+
+      <!-- Interactive Envelope & Unfolding Letter -->
+      <div class="flex flex-col items-center">
+        
+        <!-- The Envelope Container -->
+        <div id="envelope-wrapper" class="relative cursor-pointer transition-transform duration-300 hover:scale-105" onclick="toggleLetter()">
+          <!-- Closed Envelope Graphic -->
+          <div id="envelope-closed" class="w-80 sm:w-96 h-56 bg-gradient-to-br from-[#edd5be] to-[#dfc0a2] rounded-2xl shadow-2xl border border-stone-300 relative flex items-center justify-center overflow-hidden">
+            <div class="absolute inset-0 bg-[radial-gradient(#d3b290_1px,transparent_1px)] [background-size:16px_16px] opacity-40"></div>
+            <!-- Envelope Flap lines -->
+            <div class="absolute top-0 left-0 right-0 h-28 border-b-2 border-stone-400/40 bg-[#dfc0a2]/50 clip-flap"></div>
+            <!-- Wax Seal Button -->
+            <div class="relative z-10 flex flex-col items-center group">
+              <div class="wax-seal w-16 h-16 rounded-full border-2 border-rose-300/40 shadow-xl flex items-center justify-center transform group-hover:scale-110 transition-transform">
+                <span class="text-2xl text-white">💌</span>
+              </div>
+              <span class="text-xs font-semibold uppercase tracking-wider text-stone-700 mt-3 bg-white/80 px-3 py-1 rounded-full shadow-sm">Tap to open your letter</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- The Unfolded Letter -->
+        <div id="opened-letter" class="hidden w-full max-w-3xl mt-8 bg-[#fffefb] p-8 sm:p-12 rounded-3xl shadow-scrapbook border border-stone-200/80 relative transform transition-all duration-700 animate-slide-up">
+          <!-- Close button -->
+          <button onclick="toggleLetter()" class="absolute top-6 right-6 p-2 rounded-full hover:bg-stone-100 text-stone-400 hover:text-stone-600 transition-colors" title="Fold Letter">
+            ✕
+          </button>
+
+          <!-- Top Decorative Badge -->
+          <div class="flex items-center justify-between border-b border-stone-200 pb-6 mb-8">
+            <div class="flex items-center gap-3">
+              <span class="text-3xl">🎂</span>
+              <div>
+                <span class="font-serif text-2xl font-bold text-stone-900 block">Hey Prerna,</span>
+                <span class="text-xs text-stone-500 font-sans">Happy Birthday, beautiful! ❤️</span>
+              </div>
+            </div>
+            <span class="font-handwriting text-romance-600 text-2xl">Always here for you</span>
+          </div>
+
+          <!-- Letter Body -->
+          <div class="space-y-6 text-stone-700 font-sans text-base sm:text-lg leading-relaxed font-light">
+            <p>
+              Happy Birthday! I was thinking about what to make for you, and while I have real gifts for you too, I wanted to build something sweet that you could keep and look back on whenever you need a smile.
+            </p>
+            <p>
+              I just wanted to take today to remind you how much you mean to me. You’re my favorite person to talk to, my favorite person to do absolutely nothing with, and the first person I want to tell good or bad news to.
+            </p>
+            <p>
+              Thank you for always putting up with my dumb jokes, for cheering me up whenever I'm stressed, and for being the kindest, most caring girlfriend anyone could ask for. You work so hard and you give so much energy to everyone in your life, so I hope today you just get to relax, feel loved, and eat lots of cake.
+            </p>
+            <p>
+              I’m so lucky to have you in my corner, and I can't wait to keep making more memories, going on more food runs, and celebrating many more birthdays with you.
+            </p>
+          </div>
+
+          <!-- Handwritten Sign-off -->
+          <div class="mt-10 pt-6 border-t border-stone-200/60 flex flex-col items-end">
+            <span class="text-sm text-stone-500 font-sans">Love you tons,</span>
+            <span class="font-handwriting text-3xl sm:text-4xl text-romance-700 mt-2 font-bold">Always yours ❤️</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- "Things I Love About You" Cards -->
+      <div class="mt-20">
+        <h3 class="font-serif text-3xl font-bold text-center text-stone-900 mb-8">A Few Things I Love About You</h3>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          
+          <div class="bg-white/85 backdrop-blur-sm p-6 rounded-2xl border border-stone-200/80 shadow-scrapbook hover:shadow-md transition-shadow">
+            <span class="text-2xl mb-3 block">😂</span>
+            <h4 class="font-serif text-xl font-bold text-stone-900">Your Real Laugh</h4>
+            <p class="text-stone-600 text-sm mt-2 leading-relaxed font-light">
+              Not the polite smile, but the wheezing, stomach-hurting laugh when something is actually funny. It's contagious.
+            </p>
+          </div>
+
+          <div class="bg-white/85 backdrop-blur-sm p-6 rounded-2xl border border-stone-200/80 shadow-scrapbook hover:shadow-md transition-shadow">
+            <span class="text-2xl mb-3 block">🍟</span>
+            <h4 class="font-serif text-xl font-bold text-stone-900">"I'm Not Hungry"</h4>
+            <p class="text-stone-600 text-sm mt-2 leading-relaxed font-light">
+              How you claim you don't want any food, and then proceed to eat half my fries. (I secretly order extra for you anyway).
+            </p>
+          </div>
+
+          <div class="bg-white/85 backdrop-blur-sm p-6 rounded-2xl border border-stone-200/80 shadow-scrapbook hover:shadow-md transition-shadow">
+            <span class="text-2xl mb-3 block">💛</span>
+            <h4 class="font-serif text-xl font-bold text-stone-900">Your Big Heart</h4>
+            <p class="text-stone-600 text-sm mt-2 leading-relaxed font-light">
+              How deeply you care about your family, friends, and even stray dogs on the street. You have the softest heart.
+            </p>
+          </div>
+
+          <div class="bg-white/85 backdrop-blur-sm p-6 rounded-2xl border border-stone-200/80 shadow-scrapbook hover:shadow-md transition-shadow">
+            <span class="text-2xl mb-3 block">✨</span>
+            <h4 class="font-serif text-xl font-bold text-stone-900">Just Being With You</h4>
+            <p class="text-stone-600 text-sm mt-2 leading-relaxed font-light">
+              After a stressful day, literally just sitting in the same room with you makes everything feel a hundred times better.
+            </p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Interactive Happiness Station (Hug Meter & Compliment Jar) -->
+      <div class="mt-20 pt-12 border-t border-stone-200/60 max-w-4xl mx-auto">
+        <div class="text-center mb-10">
+          <span class="text-romance-600 text-xs sm:text-sm font-semibold tracking-widest uppercase">Made to Make You Smile</span>
+          <h3 class="font-serif text-3xl sm:text-4xl font-bold text-stone-900 mt-1">Little Moments of Joy, Just For You ✨</h3>
+          <p class="text-stone-500 text-sm mt-2 font-light">Two little surprises waiting for you whenever you need them today.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          
+          <!-- Card 1: Press & Hold for a Hug -->
+          <div class="bg-white/90 backdrop-blur-md p-7 rounded-3xl border border-stone-200/90 shadow-scrapbook relative text-center flex flex-col items-center justify-between">
+            <div class="washi-tape washi-tape-rose !-top-3 !left-1/2"></div>
+            <div>
+              <span class="inline-block p-2.5 rounded-full bg-romance-100 text-romance-600 mb-2">
+                <i data-lucide="heart" class="w-5 h-5 fill-current"></i>
+              </span>
+              <h4 class="font-serif text-2xl font-bold text-stone-900">Virtual Hug for Prerna 🤗</h4>
+              <p class="text-stone-500 text-xs sm:text-sm mt-1 font-light max-w-xs mx-auto">
+                Press and hold the heart button below to fill it with all my love!
+              </p>
+            </div>
+
+            <!-- The Big Interactive Heart / Meter -->
+            <div class="my-6 relative flex flex-col items-center">
+              <div class="relative w-28 h-28 flex items-center justify-center">
+                <!-- Circular SVG Progress Ring -->
+                <svg class="w-full h-full -rotate-90" viewBox="0 0 100 100">
+                  <circle cx="50" cy="50" r="44" stroke="#fce7e8" stroke-width="6" fill="transparent" />
+                  <circle id="hug-circle-progress" cx="50" cy="50" r="44" stroke="#f43f5e" stroke-width="6" stroke-dasharray="276.46" stroke-dashoffset="276.46" stroke-linecap="round" fill="transparent" class="transition-all duration-75" />
+                </svg>
+                
+                <!-- The Holdable Heart Button -->
+                <button id="hug-heart-btn" class="absolute w-20 h-20 rounded-full bg-gradient-to-tr from-romance-500 to-rose-400 text-white flex flex-col items-center justify-center shadow-lg shadow-romance-500/30 transition-transform duration-200 select-none cursor-pointer active:scale-95">
+                  <span id="hug-icon" class="text-3xl transition-transform duration-200">❤️</span>
+                  <span id="hug-percent" class="text-[10px] font-bold uppercase tracking-wider text-white/90 mt-0.5">Hold Me</span>
+                </button>
+              </div>
+
+              <p id="hug-status" class="text-xs text-stone-400 mt-3 font-sans transition-all">Hold down for 3 seconds ❤️</p>
+            </div>
+
+            <div class="text-[11px] text-stone-400 uppercase tracking-widest font-medium">
+              Unlimited Warmth Guarantee 🧸
+            </div>
+          </div>
+
+          <!-- Card 2: Jar of Sweet Thoughts -->
+          <div class="bg-white/90 backdrop-blur-md p-7 rounded-3xl border border-stone-200/90 shadow-scrapbook relative text-center flex flex-col items-center justify-between">
+            <div class="washi-tape washi-tape-gold !-top-3 !left-1/2"></div>
+            <div>
+              <span class="inline-block p-2.5 rounded-full bg-warmgold-100 text-warmgold-700 mb-2">
+                <i data-lucide="sparkles" class="w-5 h-5"></i>
+              </span>
+              <h4 class="font-serif text-2xl font-bold text-stone-900">Sweet Thoughts Jar 💌</h4>
+              <p class="text-stone-500 text-xs sm:text-sm mt-1 font-light max-w-xs mx-auto">
+                Tap the jar whenever you want a sweet little reminder of why you mean the world to me.
+              </p>
+            </div>
+
+            <!-- The Interactive Candy Jar -->
+            <div class="my-4 flex flex-col items-center w-full">
+              <button id="thought-jar-btn" onclick="drawSweetThought()" class="group relative p-3.5 rounded-3xl bg-warmgold-50/70 hover:bg-warmgold-100/70 border border-warmgold-200/60 transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer">
+                <span id="jar-emoji" class="text-5xl block transition-transform group-hover:scale-110">🍯</span>
+                <span class="inline-flex items-center gap-1.5 mt-2 px-3.5 py-1 bg-white rounded-full text-xs font-semibold text-warmgold-800 shadow-sm border border-warmgold-200/50">
+                  <span>Tap for a note</span>
+                  <span id="thought-count-badge" class="w-4 h-4 rounded-full bg-romance-500 text-white text-[10px] flex items-center justify-center font-bold">1</span>
+                </span>
+              </button>
+
+              <!-- The Active Note Display -->
+              <div id="thought-display-card" class="mt-4 p-4 rounded-2xl bg-amber-50/80 border border-amber-200/80 text-left w-full max-w-xs min-h-[95px] flex flex-col justify-center shadow-inner relative transition-all duration-300">
+                <p id="thought-text" class="text-stone-800 text-sm font-handwriting text-xl leading-snug">
+                  "Your smile in that blue saree took my breath away the second I saw you."
+                </p>
+                <span id="thought-author" class="text-[10px] text-amber-800/70 font-sans mt-2 text-right block font-medium">— Always thinking of you ❤️</span>
+              </div>
+            </div>
+
+            <div class="text-[11px] text-stone-400 uppercase tracking-widest font-medium">
+              Tap anytime for another smile ✨
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 4: THE CROWN JEWEL MEMORY (YOU & ME) ==================== -->
+  <section id="together" class="py-24 px-6 bg-gradient-to-b from-white via-parchment-50 to-romance-50/60 relative">
+    <div class="max-w-4xl mx-auto flex flex-col items-center text-center">
+      
+      <!-- Section Header -->
+      <span class="text-romance-600 text-sm font-semibold tracking-widest uppercase">The Best Memory of All</span>
+      <h2 class="font-serif text-4xl sm:text-5xl font-bold text-stone-900 mt-2 mb-3">You & Me, Always ❤️</h2>
+      <div class="flex items-center justify-center gap-2 text-stone-400 mb-6 text-xs">
+        <span>— ✦ —</span>
+      </div>
+      <p class="text-stone-600 max-w-xl leading-relaxed font-sans mb-12">
+        Of all the photos in my camera roll, this is my absolute favorite. Standing right beside you, all dressed up, looking at how beautiful you are.
+      </p>
+
+      <!-- Large Romantic Couple Polaroid Showcase -->
+      <div class="relative w-full max-w-md sm:max-w-lg bg-white p-5 sm:p-6 rounded-3xl shadow-2xl border border-stone-200/90 transition-all duration-500 hover:scale-[1.02] hover:shadow-romance-500/20">
+        <!-- Double Washi Tape Accents -->
+        <div class="washi-tape washi-tape-rose !-top-3 !left-1/3"></div>
+        <div class="washi-tape washi-tape-gold !-top-3 !left-2/3"></div>
+
+        <!-- The Photo of Atharva & Prerna Together! -->
+        <div class="overflow-hidden rounded-2xl shadow-inner bg-stone-100 relative">
+          <img src="photos/together.jpg" alt="You and Me Together" class="w-full h-auto object-cover transition-transform duration-700 hover:scale-105 block">
+        </div>
+
+        <!-- Caption Area -->
+        <div class="pt-6 pb-2 text-center">
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 bg-romance-50 text-romance-700 rounded-full text-xs font-semibold mb-2">
+            <span>✨ Our Best Moment</span>
+          </div>
+          <p class="font-handwriting text-3xl sm:text-4xl text-stone-900 font-bold">
+            My favorite place is right next to you
+          </p>
+          <p class="text-stone-600 text-sm sm:text-base font-sans mt-3 leading-relaxed px-4 font-light">
+            You looked so breathtaking in that blue saree, and seeing your smile next to mine made it an unforgettable day. Life is just so much better with you holding my arm.
+          </p>
+          <div class="mt-4 pt-4 border-t border-stone-100 flex items-center justify-between text-xs text-stone-400 px-2 font-sans">
+            <span>💙 Traditional Day</span>
+            <span>Since Nov 18, 2025</span>
+            <span>❤️ Prerna</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 5: THE FINALE (CAKE & CANDLE) ==================== -->
+  <section id="grand-finale" class="py-28 px-6 bg-gradient-to-b from-parchment-50 to-romance-100/50 text-center relative overflow-hidden">
+    
+    <div class="max-w-3xl mx-auto relative z-10 flex flex-col items-center">
+      
+      <span class="text-romance-600 text-sm font-semibold tracking-widest uppercase">One Last Thing</span>
+      <h2 class="font-serif text-5xl sm:text-6xl font-bold text-stone-900 mt-2 mb-3">Make a Birthday Wish, Prerna!</h2>
+      <div class="flex items-center justify-center gap-2 text-stone-400 mb-4 text-xs">
+        <span>— ✦ —</span>
+      </div>
+      <p class="text-stone-600 max-w-lg mb-12 font-sans font-light">
+        Close your eyes, think of the biggest wish you have for this year, and blow out your candle!
+      </p>
+
+      <!-- Interactive Birthday Cake Graphic -->
+      <div class="relative w-64 h-64 mb-8 flex flex-col items-center justify-end">
+        
+        <!-- Glowing Candle -->
+        <div id="candle" class="relative flex flex-col items-center cursor-pointer transition-transform duration-300 hover:scale-110" onclick="blowCandle()">
+          <!-- Flame -->
+          <div id="flame" class="candle-flame w-6 h-9 rounded-full bg-gradient-to-t from-warmgold-500 via-orange-400 to-yellow-200 shadow-[0_0_20px_#facc15] animate-flicker"></div>
+          <!-- Wick -->
+          <div class="w-1 h-3 bg-stone-800"></div>
+          <!-- Candle Body -->
+          <div class="w-4 h-16 bg-gradient-to-r from-romance-300 via-romance-200 to-romance-300 rounded-t-sm border border-romance-400/40"></div>
+        </div>
+
+        <!-- Cake Tier 1 (Top) -->
+        <div class="w-36 h-12 bg-white rounded-t-2xl shadow-sm border border-stone-200 relative flex items-center justify-center -mt-1">
+          <!-- Frosting Drips -->
+          <div class="absolute -bottom-1 left-0 right-0 h-3 bg-romance-200 rounded-full flex justify-around px-2">
+            <span class="w-3 h-3 bg-romance-200 rounded-full -mt-1"></span>
+            <span class="w-3 h-4 bg-romance-200 rounded-full"></span>
+            <span class="w-2.5 h-3 bg-romance-200 rounded-full"></span>
+            <span class="w-3 h-4 bg-romance-200 rounded-full"></span>
+          </div>
+          <span class="font-serif text-xs font-bold text-romance-600 uppercase tracking-widest">Happy Birthday</span>
+        </div>
+
+        <!-- Cake Tier 2 (Bottom Base) -->
+        <div class="w-56 h-20 bg-gradient-to-b from-stone-50 to-white rounded-t-3xl shadow-lg border border-stone-200/90 relative flex items-center justify-center">
+          <div class="absolute top-2 w-48 h-1 bg-romance-200/80 rounded-full"></div>
+          <span class="font-handwriting text-2xl text-stone-700">Prerna • Happy Birthday!</span>
+        </div>
+
+        <!-- Cake Plate -->
+        <div class="w-64 h-3 bg-stone-200 rounded-full shadow-md -mt-1"></div>
+
+      </div>
+
+      <!-- Action Button: Blow Out Candle -->
+      <button id="blow-btn" onclick="blowCandle()" class="group flex items-center gap-3 bg-gradient-to-r from-romance-600 via-rose-500 to-warmgold-500 hover:from-romance-700 hover:to-warmgold-600 text-white font-medium px-10 py-4 rounded-full shadow-xl shadow-romance-500/25 transition-all duration-300 hover:scale-105 active:scale-95 text-base sm:text-lg">
+        <i data-lucide="sparkles" class="w-5 h-5 text-yellow-200"></i>
+        <span id="blow-btn-text">Blow Out the Candle ✨</span>
+      </button>
+
+      <!-- Post-Blowout Congratulations Card -->
+      <div id="congrats-card" class="hidden mt-10 p-8 sm:p-10 bg-white/95 backdrop-blur-md rounded-3xl border border-warmgold-300 shadow-2xl max-w-xl animate-fade-in">
+        <span class="text-4xl block mb-2">🎉🥂🎂</span>
+        <h3 class="font-serif text-3xl sm:text-4xl font-bold text-stone-900 mb-3">May Every Wish Come True!</h3>
+        <p class="text-stone-600 leading-relaxed font-sans mb-6 font-light">
+          Happy Birthday, Prerna! Thank you for making my life so much brighter, happier, and full of love every single day. Now let's go celebrate!
+        </p>
+        <div class="flex items-center justify-center gap-2 text-romance-600 font-handwriting text-2xl">
+          <span>Love you so much ❤️</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Hug Celebration Modal -->
+  <div id="hug-modal" class="fixed inset-0 z-[10001] bg-black/50 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-8 text-center shadow-2xl border border-romance-200 relative animate-scale-up">
+      <div class="washi-tape washi-tape-rose !-top-3 !left-1/2"></div>
+      <span class="text-6xl block mb-3 animate-bounce">🧸💖</span>
+      <h3 class="font-serif text-3xl font-bold text-stone-900 mb-2">Hug Delivered! 🤗❤️</h3>
+      <p class="text-stone-600 text-sm sm:text-base leading-relaxed font-sans mb-6 font-light">
+        Wrapped in the warmest, tightest birthday hug just for you today, Prerna. Whenever you miss me, need comfort, or just want to feel loved, remember you have a permanent place in my arms.
+      </p>
+      <div class="p-3 bg-romance-50 rounded-2xl border border-romance-100 text-romance-700 font-handwriting text-xl mb-6">
+        I love you more than words can say ❤️
+      </div>
+      <button onclick="closeHugModal()" class="w-full py-3.5 bg-gradient-to-r from-romance-600 to-rose-500 hover:from-romance-700 hover:to-rose-600 text-white rounded-full font-medium shadow-md shadow-romance-500/25 transition-all text-base">
+        Receive Hug & Smile 😊
+      </button>
+    </div>
+  </div>
+
+  <!-- Lucide Script init -->
+  <script>
+    lucide.createIcons();
+  </script>
+  
+  <script src="script.js?v=happy"></script>
+</body>
+</html>
