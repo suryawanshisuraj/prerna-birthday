@@ -6,7 +6,7 @@
 const SITE_CONFIG = {
   herName: "Prerna",
   startDate: "2025-11-18", // YYYY-MM-DD
-  customAudioFile: null,
+  customAudioFile: "birthday.mp3",
 };
 
 // ==================== INITIALIZATION ====================
@@ -260,28 +260,46 @@ function initBackgroundPetals() {
   setInterval(spawnPetal, 2000);
 }
 
-// ==================== 4. ROMANTIC VINTAGE MUSIC BOX SYNTH ====================
+// ==================== 4. BIRTHDAY MUSIC & VINTAGE MUSIC BOX ====================
 let audioCtx = null;
 let isPlaying = false;
 let synthTimer = null;
+let bgAudio = null;
 
-const melody = [
-  523.25, // C5
-  659.25, // E5
-  783.99, // G5
-  659.25, // E5
-  587.33, // D5
-  739.99, // F#5
-  880.00, // A5
-  739.99, // F#5
-  440.00, // A4
-  523.25, // C5
-  659.25, // E5
-  523.25, // C5
-  392.00, // G4
-  493.88, // B4
-  587.33, // D5
-  493.88  // B4
+// The actual "Happy Birthday to You" melody (frequencies in Hz, durations in ms):
+const HAPPY_BIRTHDAY_MELODY = [
+  { f: 392.00, d: 350 }, // G4 Hap-
+  { f: 392.00, d: 220 }, // G4 py
+  { f: 440.00, d: 550 }, // A4 Birth-
+  { f: 392.00, d: 550 }, // G4 day
+  { f: 523.25, d: 550 }, // C5 to
+  { f: 493.88, d: 1100 }, // B4 you
+  { f: 0, d: 300 }, // rest
+
+  { f: 392.00, d: 350 }, // G4 Hap-
+  { f: 392.00, d: 220 }, // G4 py
+  { f: 440.00, d: 550 }, // A4 Birth-
+  { f: 392.00, d: 550 }, // G4 day
+  { f: 587.33, d: 550 }, // D5 to
+  { f: 523.25, d: 1100 }, // C5 you
+  { f: 0, d: 300 }, // rest
+
+  { f: 392.00, d: 350 }, // G4 Hap-
+  { f: 392.00, d: 220 }, // G4 py
+  { f: 783.99, d: 550 }, // G5 Birth-
+  { f: 659.25, d: 550 }, // E5 day
+  { f: 523.25, d: 550 }, // C5 dear
+  { f: 493.88, d: 550 }, // B4 Prer-
+  { f: 440.00, d: 1100 }, // A4 na
+  { f: 0, d: 300 }, // rest
+
+  { f: 698.46, d: 350 }, // F5 Hap-
+  { f: 698.46, d: 220 }, // F5 py
+  { f: 659.25, d: 550 }, // E5 Birth-
+  { f: 523.25, d: 550 }, // C5 day
+  { f: 587.33, d: 550 }, // D5 to
+  { f: 523.25, d: 1400 }, // C5 you!
+  { f: 0, d: 900 } // rest before repeat
 ];
 let noteIndex = 0;
 
@@ -289,7 +307,16 @@ function initAudio() {
   const btn = document.getElementById("music-toggle-btn");
   if (!btn) return;
   const wave = btn.querySelector(".music-wave");
-  wave.classList.add("paused");
+  if (wave) wave.classList.add("paused");
+
+  bgAudio = document.getElementById("bg-audio");
+  if (!bgAudio && SITE_CONFIG.customAudioFile) {
+    bgAudio = new Audio(SITE_CONFIG.customAudioFile);
+    bgAudio.loop = true;
+  }
+  if (bgAudio) {
+    bgAudio.volume = 0.65;
+  }
 
   btn.addEventListener("click", (e) => {
     e.stopPropagation();
@@ -329,58 +356,69 @@ function startMusic() {
   const wave = btn ? btn.querySelector(".music-wave") : null;
   const text = document.getElementById("music-text");
 
+  isPlaying = true;
+  if (wave) wave.classList.remove("paused");
+  if (text) text.textContent = "Playing 🎵";
+
+  // Attempt to play the birthday MP3 first
+  if (bgAudio) {
+    bgAudio.play().then(() => {
+      // Playing MP3 successfully!
+    }).catch(err => {
+      // If blocked or not supported, seamlessly fallback to music box synth
+      playBirthdaySynthNote();
+    });
+  } else {
+    playBirthdaySynthNote();
+  }
+}
+
+function playBirthdaySynthNote() {
+  if (!isPlaying) return;
+
   if (!audioCtx) {
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     audioCtx = new AudioContext();
   }
-
   if (audioCtx.state === "suspended") {
     audioCtx.resume();
   }
 
-  isPlaying = true;
-  if (wave) wave.classList.remove("paused");
-  if (text) text.textContent = "Playing 💖";
-
-  playMusicBoxNote();
-}
-
-function playMusicBoxNote() {
-  if (!isPlaying || !audioCtx) return;
-
+  const current = HAPPY_BIRTHDAY_MELODY[noteIndex % HAPPY_BIRTHDAY_MELODY.length];
   const now = audioCtx.currentTime;
-  const freq = melody[noteIndex % melody.length];
 
-  const osc1 = audioCtx.createOscillator();
-  const gain1 = audioCtx.createGain();
-  osc1.type = "sine";
-  osc1.frequency.setValueAtTime(freq, now);
+  if (current.f > 0) {
+    const osc1 = audioCtx.createOscillator();
+    const gain1 = audioCtx.createGain();
+    osc1.type = "sine";
+    osc1.frequency.setValueAtTime(current.f, now);
 
-  const osc2 = audioCtx.createOscillator();
-  const gain2 = audioCtx.createGain();
-  osc2.type = "triangle";
-  osc2.frequency.setValueAtTime(freq * 2.01, now);
+    const osc2 = audioCtx.createOscillator();
+    const gain2 = audioCtx.createGain();
+    osc2.type = "triangle";
+    osc2.frequency.setValueAtTime(current.f * 2.01, now);
 
-  gain1.gain.setValueAtTime(0.001, now);
-  gain1.gain.exponentialRampToValueAtTime(0.14, now + 0.04);
-  gain1.gain.exponentialRampToValueAtTime(0.0001, now + 1.8);
+    gain1.gain.setValueAtTime(0.001, now);
+    gain1.gain.exponentialRampToValueAtTime(0.14, now + 0.03);
+    gain1.gain.exponentialRampToValueAtTime(0.0001, now + (current.d / 1000) * 1.5);
 
-  gain2.gain.setValueAtTime(0.001, now);
-  gain2.gain.exponentialRampToValueAtTime(0.04, now + 0.03);
-  gain2.gain.exponentialRampToValueAtTime(0.0001, now + 1.2);
+    gain2.gain.setValueAtTime(0.001, now);
+    gain2.gain.exponentialRampToValueAtTime(0.04, now + 0.03);
+    gain2.gain.exponentialRampToValueAtTime(0.0001, now + (current.d / 1000) * 1.2);
 
-  osc1.connect(gain1);
-  osc2.connect(gain2);
-  gain1.connect(audioCtx.destination);
-  gain2.connect(audioCtx.destination);
+    osc1.connect(gain1);
+    osc2.connect(gain2);
+    gain1.connect(audioCtx.destination);
+    gain2.connect(audioCtx.destination);
 
-  osc1.start(now);
-  osc2.start(now);
-  osc1.stop(now + 1.9);
-  osc2.stop(now + 1.3);
+    osc1.start(now);
+    osc2.start(now);
+    osc1.stop(now + (current.d / 1000) * 1.6);
+    osc2.stop(now + (current.d / 1000) * 1.3);
+  }
 
   noteIndex++;
-  synthTimer = setTimeout(playMusicBoxNote, 620);
+  synthTimer = setTimeout(playBirthdaySynthNote, current.d);
 }
 
 function pauseMusic() {
@@ -390,8 +428,15 @@ function pauseMusic() {
 
   isPlaying = false;
   if (wave) wave.classList.add("paused");
-  if (text) text.textContent = "Our Song 🎵";
-  if (synthTimer) clearTimeout(synthTimer);
+  if (text) text.textContent = "Birthday Song 🎵";
+
+  if (bgAudio) {
+    try { bgAudio.pause(); } catch (e) {}
+  }
+  if (synthTimer) {
+    clearTimeout(synthTimer);
+    synthTimer = null;
+  }
 }
 
 // ==================== 5. INTERACTIVE CANDLE & CELEBRATION ====================
